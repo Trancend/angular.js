@@ -1049,20 +1049,21 @@ function angularInit(element, bootstrap) {
   });
 
   forEach(elements, function(element) {
-    if (!appElement) {
-      var className = ' ' + element.className + ' ';
-      var match = NG_APP_CLASS_REGEXP.exec(className);
-      if (match) {
-        appElement = element;
-        module = (match[2] || '').replace(/\s+/g, ',');
-      } else {
-        forEach(element.attributes, function(attr) {
-          if (!appElement && names[attr.name]) {
-            appElement = element;
-            module = attr.value;
-          }
-        });
-      }
+    if (appElement) {
+      return false;
+    }
+    var className = ' ' + element.className + ' ';
+    var match = NG_APP_CLASS_REGEXP.exec(className);
+    if (match) {
+      appElement = element;
+      module = (match[2] || '').replace(/\s+/g, ',');
+    } else {
+      forEach(element.attributes, function(attr) {
+        if (!appElement && names[attr.name]) {
+          appElement = element;
+          module = attr.value;
+        }
+      });
     }
   });
   if (appElement) {
